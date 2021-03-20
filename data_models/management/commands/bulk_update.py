@@ -16,6 +16,14 @@ def random_id():
     return randint(1, 100_000)
 
 
+def naive_update():
+    for _ in range(OBJECTS):
+        object = DataModel.objects.get(id=random_id())
+        object.text = token_urlsafe(75)
+        object.description = token_urlsafe(150)
+        object.save()
+
+
 def bulk_update():
     objects = []
     for _ in range(OBJECTS):
@@ -55,8 +63,12 @@ class Command(BaseCommand):
         parser.add_argument('-q', '--query', action='store_true',
                             help='Perform bulk update with raw SQL query')
 
+        parser.add_argument('-n', '--naive', action='store_true',
+                            help='Perform updates in naive way')
+
     def handle(self, *args, **options):
         by_query = options['query']
+        naive_way = options['naive']
 
         tic = perf_counter()
 
@@ -64,6 +76,11 @@ class Command(BaseCommand):
             print('by query')
             for _ in range(TIMES):
                 query_update()
+
+        elif naive_way:
+            print('naive way')
+            for _ in range(TIMES):
+                naive_update()
 
         else:
             print('by bulk_update')

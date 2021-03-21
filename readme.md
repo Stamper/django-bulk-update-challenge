@@ -15,6 +15,9 @@
 ### Run data update by raw SQL query
 `python manage.py bulk_update -q`
 
+### Run data update by [asyncpg](https://github.com/MagicStack/asyncpg) driver
+`python manage.py bulk_update --asyncpg`
+
 ## My results
 My local DB is dockerised PostgreSQL v 10
 ```
@@ -25,4 +28,8 @@ by bulk_update
 by query
 >> 5.477139 seconds
 ```
-**x3.4 performance improvement**
+```
+by asyncpg
+>> 5.810879 seconds
+```
+**bulk_update -> raw sql: x3.4 performance improvement**

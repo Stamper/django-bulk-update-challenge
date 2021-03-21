@@ -60,10 +60,8 @@ def query_update():
 
 
 async def run_query(q):
-    print(perf_counter())
     conn = await asyncpg.connect(user='postgres', password='postgres',
                                  database='bulk_test', host='localhost')  # takes 2..6 ms
-    print(perf_counter())
     await conn.execute(q)
     await conn.close()
 
